@@ -1,0 +1,18 @@
+TAREA 1: 
+Desarrollar una función que, conocido el tipo de encargo, devuelva el tiempo medio empleado en la ejecución de la misma.
+
+El encargo podemos identificarlo por su nombre o por su ID. Por, tanto, desarrollar dos versiones dicha función, según se le pase un dato u otro como parámetro.
+
+
+
+TAREA 2: 
+Desarrollar una función que, conocida la categoría de encargo (su ID), devuelva el tiempo estimado que un encargo ha de esperar para entrar en producción.
+
+Para ello, tener en cuenta que:
+
+TIEMPO_ESTIMADO_DE_ESPERA = TIEMPO_EN_COLA + TIEMPO_DE_ENCARGOS_EN_EJECUCIÓN
+
+Donde:
+TIEMPO_EN_COLA = Sumatorio(ENCARGO_ABIERTO_EN_COLA * Tiempo_Medio(CATEGORIA_DEL_ENCARGO))
+TIEMPO_DE_ENCARGOS_EN_EJECUCIÓN = Sumatorio(Tiempos_Restantes(ENCARGO_ABIERTO_EN_EJECUCIÓN))
+
