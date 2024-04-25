@@ -45,7 +45,7 @@ function call_API($url)
 // Funcion que devuelve una lista de encargos abiertos en cola o en ejecución según el "id" cola o "id" ejecución
 function getListaEncargos($id_entity, $id_category)
 {
-    // Filtro que el encargo no esté cancelado ni en ejecución
+    // Filtro: que el encargo no esté cancelado ni en ejecución
     $params = array
     (
         'entityTypeId' => $id_entity,
@@ -126,6 +126,40 @@ function tiempoMedioCola($id_tipoEncargo, $id_entity)
 }
 
 
+// Función que devuelve el tiempo total reestimado de los encargos en ejecución 
+function tiempoTotalEjecucion($listaEncargos)
+{
+    $tiempoTotal = 0;
+
+    // Iterar sobre los encargos
+    foreach ($listaEncargos as $encargo) 
+    {
+        // Obtener el tiempo reestimado de cada encargo
+        $tiempoReestimado = $encargo->ufCrm8_1712759653;
+
+        // Tiempo total reestimado en días en decimales
+        $tiempoTotal += $tiempoReestimado;
+        $total = $tiempoTotal/8;
+
+        // Redondear el total de días decimales
+        if(($total) >= 1)
+        {
+            $totalDias = ceil($total);
+        }
+        elseif($total > 0)
+        {
+            $totalDias = 1;
+        }
+        else
+        {
+            $totalDias = 0;
+        }
+    }
+
+    return $totalDias;
+}
+
+
 
 /****************  PRINCIPAL  ****************/
 
@@ -151,14 +185,22 @@ foreach ($conteoEncargos as $tipoEncargo => $cantidad)
 }
 
 // Tiempo total días en cola
-echo "<br> Tiempo total en cola: $tiempoTotalCola días <br><br>";
-
+echo "<br>Tiempo total en cola: $tiempoTotalCola días <br>";
 
 
 
 // Obtener la lista de encargos abiertos en ejecución según el id ejecución
 $listaEncargosEjecucion = getListaEncargos(137, 12);
 
+// Tiempo total días en ejecución
+$tiempoTotalEjecucion = tiempoTotalEjecucion($listaEncargosEjecucion);
+
+echo "<br>Tiempo total en ejecución: $tiempoTotalEjecucion días <br>";
+
+// Tiempo estimado de espera de un encargo para entrar en producción
+$tiempoEspera = $tiempoTotalCola + $tiempoTotalEjecucion;
+echo "<br>Tiempo estimado de espera: $tiempoEspera días";
 
 
 ?>
+
